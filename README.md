@@ -3,6 +3,8 @@
 With a few words and a click of a button, quickly get an engaging, high quality video.
 (And optionally save and share it!)
 
+Try it here, right now! [https://vlearn.ing](https://vlearn.ing)
+
 <a href="https://www.loom.com/share/b6bf0dcef3874d338bb71cef4db00cfd">
   <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/b6bf0dcef3874d338bb71cef4db00cfd-with-play.gif">
 </a>
