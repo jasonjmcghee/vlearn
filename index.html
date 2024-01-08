@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>vlearn: On-Demand Education</title>
+  <link rel="stylesheet" href="css/vlearn.css">
+  <link rel="stylesheet" href="css/reveal/reveal.css">
+  <link rel="stylesheet" href="css/reveal/theme/black.css">
+</head>
+<body>
+<script src="js/dist/reveal/reveal.js"></script>
+<script src="js/plugin/notes/notes.js"></script>
+<script src="js/plugin/markdown/markdown.js"></script>
+<script src="js/plugin/highlight/highlight.js"></script>
+<script src="js/dist/ffmpeg/ffmpeg.min.js"></script>
+<script src="js/dist/ffmpeg/util.min.js"></script>
+<script src="js/dist/html2canvas/html2canvas.min.js"></script>
+<div class="input-container">
+  <div class="top-header-line">
+    <div class="api-key-container">
+      <label for="apiKey"><a id="api-key-link" href="https://platform.openai.com/api-keys">Open API Key</a></label>
+    <input type="password" id="apiKey" placeholder="Enter api key" value="">
+    </div>
+      <div class="github">
+        <a href="https://github.com/jasonjmcghee/vlearn" target="_blank">
+          <img height=16 width=16 src="img/github.svg">
+          <span>GitHub</span>
+      </a>
+        </div>
+    <div class="download-container">
+      <label for="download">Save Video</label>
+      <button title="Download zip of movie when it finishes!" id="download" onclick="toggleDownloadVideo()" disabled>
+        <img id="download-icon" src="img/download.svg" alt="download"/>
+      </button>
+      <div class="download-progress-container"><span id="download-progress">0%</span></div>
+    </div>
+  </div>
+  <div id="audioPlayers">
+
+  </div>
+</div>
+
+
+<div class="reveal">
+  <div class="slides">
+      <h1>
+          Getting started
+      </h1>
+      <p>💰Cost: ~$0.15/video</p>
+      <p>⚠️ Do not use if free tier, text-to-speech limit is 3 per minute. ⚠️</p>
+      <ol>
+          <li>🧠  Add OpenAI API Key
+            <ul>
+              <li>Only sent to OpenAI</li>
+            </ul>
+          </li>
+          <li>🔉  Turn on sound</li>
+          <li>✍️   Enter what you want to learn</li>
+          <li>▶️ Hit play</li>
+          <li>🎓  Start learning</li>
+          <li>📠  Save as a video and share</li>
+      </ol>
+  </div>
+</div>
+
+<div class="prompt-container">
+  <textarea class="prompt" id="deckPrompt" placeholder="Enter topic for slide deck"></textarea>
+  <button id="prompt-button" onclick="toggleGeneration()">
+    <img id="generate" src="img/new-video.svg" alt="new-video"/>
+  </button>
+  <button disabled id="pause-button" onclick="togglePlaying()">
+    <img id="pause" src="img/play.svg" alt="play"/>
+  </button>
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

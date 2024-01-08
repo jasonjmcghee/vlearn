@@ -1,0 +1,229 @@
+/* CSS styles */
+html {
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+}
+
+label {
+  font-variant: all-small-caps;
+}
+
+body {
+  background: #191919;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+#api-key-link {
+  color: #03836c;
+}
+
+.top-header-line {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.api-key-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: white;
+}
+
+.download-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: white;
+  text-align: center;
+}
+
+#download[downloading] {
+  background: #c91a25;
+}
+
+.input-container {
+  width: calc(100% - 40px);
+  padding: 20px 20px 0;
+  text-align: center;
+}
+
+.input-container button {
+  font-size: 0;
+  padding: 10px 14px;
+  height: 48px;
+}
+
+.input-container button {
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #03836c;
+  border: 1px solid transparent;
+}
+
+.input-container button:hover {
+  background-color: #04a286;
+  border: 1px solid #262626;
+}
+
+.input-container button[disabled] {
+  background-color: #494b4a;
+  opacity: 0.5;
+}
+
+.input-container button[disabled]:hover {
+  cursor: not-allowed;
+  border: 1px solid transparent;
+}
+
+.prompt {
+  resize: none;
+  padding-bottom: 12px;
+  background: #252327;
+  border: 1px solid #2E2C32;
+  border-radius: 12px;
+}
+
+.prompt-container {
+  position: relative;
+  padding: 20px;
+  width: 80%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.prompt-container button[disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+  border: 1px solid transparent;
+}
+
+.prompt-container textarea {
+  width: 100%;
+}
+
+#prompt-button {
+  background-color: #3d3f99;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0;
+  border: 1px solid transparent;
+  padding: 20px 20px;
+}
+
+#prompt-button:hover {
+  background-color: #494baa;
+  border: 1px solid #262626;
+}
+
+#prompt-button[generating] {
+  background: #c91a25;
+}
+
+#pause-button {
+  background-color: #3d3f99;
+  padding: 20px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0;
+  color: white;
+  border: 1px solid transparent;
+}
+
+#pause-button[disabled] {
+  background-color: #494b4a;
+}
+
+#pause-button:hover {
+  background-color: #494baa;
+  border: 1px solid #262626;
+}
+
+textarea {
+  padding: 10px;
+  font-size: 16px;
+  max-width: 1000px;
+
+  background: #252327;
+  border: 1px solid #2E2C32;
+  border-radius: 12px;
+  color: #F8F8F2;
+}
+
+textarea[loading] {
+  animation: fadeInOut 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+textarea[disabled] {
+  color: #67636F;
+}
+
+/* Keyframes for fading in and out */
+@keyframes fadeInOut {
+  0%, 100% { background: #252327; }
+  50% { background: #333136; }
+}
+
+input {
+  padding: 10px;
+  font-size: 16px;
+  max-width: 1000px;
+
+  background: #252327;
+  border: 1px solid #2E2C32;
+  border-radius: 6px;
+  color: #F8F8F2;
+}
+
+::placeholder {
+  color: #67636F;
+}
+
+#audioPlayers {
+  position: relative;
+  display: none;
+}
+
+.reveal {
+  width: 80%;
+  height: 600px;
+  border-radius: 10px;
+  background: #191919 !important;
+}
+
+.github {
+  position: absolute;
+  left: 50%;
+  top: 40px;
+}
+
+.github a {
+  color: white;
+  font-size: 14px;
+  opacity: 0.8;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.github:hover {
+  text-decoration: underline;
+}
+
+.download-progress-container {
+  display: flex;
+  justify-content: space-between;
+  opacity: 0;
+}
+
