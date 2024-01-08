@@ -769,7 +769,7 @@ async function getMarkdownSlides(subject) {
 
   const response_data = await response.json();
   const response_message = response_data.choices[0].message
-  return JSON.parse(response_message.tool_calls[0].function.arguments).slides;
+  return JSON.parse(response_message.tool_calls[0].function.arguments).slides.filter((a) => a.trim().length);
 }
 
 async function getAPICompletion(content) {
