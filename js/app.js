@@ -1,5 +1,6 @@
 // Fake / Mock mode?
-const fakeMode = true;
+const fakeMode = false;
+
 
 // Important variables
 let stopController = new AbortController();
@@ -13,9 +14,10 @@ let currentSlideIndex = 0;
 let showTextAreaLoading = false;
 let downloadVideoMode = false;
 let isPaused = true;
+let didDownload = false;
 
 let audioDurations = [];
-let audioFiles = []; // This will store audio URLs and filenames
+let audioFiles = [];
 let imageBlobs = [];
 let videoTopic = "";
 
@@ -26,6 +28,7 @@ function resetGlobalVariables() {
   isDownloading = false;
   manualMode = false;
   isPaused = true;
+  didDownload = false;
   currentAudio = null;
   currentSlideIndex = 0;
   downloadVideoMode = false;
@@ -60,9 +63,13 @@ window.didStopGenerating = function() {
   document.getElementById("generate").setAttribute("alt", "new-video");
   document.getElementById("prompt-button").toggleAttribute("generating", false);
   document.getElementById("deckPrompt").toggleAttribute("disabled", false);
-  document.getElementById("pause-button").toggleAttribute("disabled", false);
   document.getElementById("download").toggleAttribute("disabled", false);
   isGenerating = false;
+  isPaused = true;
+  manualMode = true;
+  window.onbeforeunload = function () {
+    return true;
+  };
   if (Reveal.isLastSlide()) {
     Reveal.slide(0, 0, undefined);
   }
@@ -76,27 +83,42 @@ window.toggleGeneration = function() {
   }
 }
 
+window.didStopPlaying = function() {
+  isPaused = true;
+  document.getElementById("pause").setAttribute("src", "img/play.svg");
+  document.getElementById("pause").setAttribute("alt", "play");
+  document.getElementById("pause-button").toggleAttribute("disabled", false);
+}
+
+window.didStartPlaying = function() {
+  isPaused = false;
+  document.getElementById("pause").setAttribute("src", "img/pause.svg");
+  document.getElementById("pause").setAttribute("alt", "pause");
+  document.getElementById("pause-button").toggleAttribute("disabled", false);
+}
+
 window.togglePlaying = function() {
   if (isPaused) {
-    isPaused = false;
-    document.getElementById("pause").setAttribute("src", "img/pause.svg");
-    document.getElementById("pause").setAttribute("alt", "pause");
+    didStartPlaying();
     currentAudio?.play();
   } else {
-    isPaused = true;
-    document.getElementById("pause").setAttribute("src", "img/play.svg");
-    document.getElementById("pause").setAttribute("alt", "play");
+    didStopPlaying();
     currentAudio?.pause();
   }
 }
 
 window.startDeckGeneration = async function() {
+  if (audioFiles > 0 && !didDownload) {
+    const message = "You did not save the video you created. It will be deleted if you generate another without saving it. Are you sure you want to continue?";
+    // If cancel, stop.
+    if (!confirm(message)) {
+      return;
+    }
+  }
   const prompt = document.getElementById('deckPrompt').value.trim();
   if (prompt === videoTopic) {
     manualMode = true;
     Reveal.initialize({
-      width: 1200,
-      height: 700,
       transition: 'none',
       controlsTutorial: true,
       controls: true,
@@ -215,7 +237,13 @@ async function* getSlideCommentary(subject, slides) {
     return;
   }
 
-  const stream = await getAPICompletion(scriptPrompt(subject, slides));
+  // Stringify as JSON to make it super clear.
+  let slidesForPrompt = `\`\`\`
+  {
+    "slides": ${JSON.stringify(slides)}
+  }
+  \`\`\``;
+  const stream = await getAPICompletion(scriptPrompt(subject, slidesForPrompt, slides.length));
 
   const reader = stream.getReader();
   let runningText = "";
@@ -336,6 +364,9 @@ function playNextAudio(audio) {
     }
     audio.oncanplaythrough = null;
     audio.play();
+    if (isPaused) {
+      didStartPlaying();
+    }
   };
 
   if (audio.readyState < HTMLMediaElement.HAVE_ENOUGH_DATA) {
@@ -442,6 +473,8 @@ function didStopDownloading() {
   document.getElementById("download-icon").setAttribute("src", "img/download.svg");
   document.querySelector(".download-progress-container").style.opacity = "0";
   isDownloading = false;
+  didDownload = true;
+  window.onbeforeunload = null;
 }
 
 window.toggleDownloadVideo = async function() {
@@ -524,7 +557,7 @@ async function processPair(imageBlob, audioBlob, index) {
   await ffmpeg.exec([
     '-y',
     '-loop', '1',
-    '-framerate', '4',
+    '-framerate', '2',
     '-i', `input${index}.png`,
     '-i', `input${index}.mp3`,
     '-c:v', 'libx264',
@@ -582,7 +615,7 @@ async function processAllPairs() {
 
 const slidesPrompt = (subject) => `You are helping build an educational intensive crash course which will help me learn "${subject}" which is about 4 minutes long.
 
-Output JSON of 5-10 slides in markdown format with a short title (in the form of a conclusion that clearly teaches me a key concept), and optionally supporting text or supporting bullet points. If more text, such as a specific written example, will be helpful, include it as a blockquote.
+Output JSON of 5-7 slides in markdown format with a short title (in the form of a conclusion that clearly teaches me a key concept), and optionally supporting text or supporting bullet points. If more text, such as a specific written example, will be helpful, include it as a blockquote.
 
 If this relates to programming, include code (tagged with the language) on appropriate slides. For code: err on the side of including an example. Make sure to prepend \n to any code blocks (triple ticks). Only indent with 2 spaces, not 4 spaces.
 
@@ -604,25 +637,31 @@ Use this only to understand the format of the JSON which should be created:
 
 {
   "slides": [
-    "# Electromagnetism and Gravity\nExploring the deep connections between electromagnetism and gravity
+    "# Electromagnetism and Gravity\n- Exploring the deep connections between electromagnetism and gravity,
     "# Electromagnetism is a gauge theory\n- Keeping things symmetric even when we change our perspective\n- Attempts to formulate gravity as a gauge theory",
     "# Kaluza-Klein Theory\n- Unification of electromagnetism and gravity\n- Extra dimensions and compactification",
   ],
 }`;
 
-const scriptPrompt = (subject, slides) => `${slides}
+const scriptPrompt = (subject, slides, slideCount) => `${slides}
 
 --- end of slides ---
 
-You are helping build an educational intensive crash course which will help me learn "${subject}", which is about 4 minutes long.
+Notice that there are ${slideCount} slides.
 
-Your job is to output a complete script for the video, based on the above slides.
+The slides are in JSON format, featuring a list of all slides, each defined by markdown.
 
 You should separate each per-slide script portion by six hyphens surrounded by newlines, like
 
 ------
 
-Every single slide _MUST_ have a script portion. The number of script portions must match the number of slides exactly.
+Every single slide _MUST_ have a script portion. The number of script portions must be exactly ${slideCount}.
+
+You must only output markdown.
+
+You are helping build an educational intensive crash course which will help me learn "${subject}", which is about 4 minutes long.
+
+Your job is to output a complete script for the video, based on the above slides.
 
 Clearly teach me about the subject, as defined by the slides above.
 
@@ -634,7 +673,7 @@ Use casual and articulate speech. Avoid jargon.
 
 Do not say "it's like" or "it was like".
 
-Do not make comparisons, similes or metaphors.
+Do not make comparisons. Do not use similes. Do not use metaphors.
 
 Any references or comparisons must be accurate, clear and obvious. Do not force metaphors.
 
@@ -676,7 +715,9 @@ You should separate each per-slide script portion by six hyphens surrounded by n
 
 # VERY IMPORTANT
 
-Every single slide _MUST_ have a script portion. The number of script portions must match the number of slides exactly.
+Every single slide _MUST_ have a script portion. The number of script portions must be exactly ${slideCount}.
+
+Never compare anything to a "dance" unless the subject is specifically about dance.
 
 Remember I will have the slides from before. Do not output it to the chat.`
 
