@@ -5,6 +5,10 @@ With a few words and a click of a button, quickly get an engaging, high quality 
 
 Try it here, right now! [https://vlearn.ing](https://vlearn.ing)
 
+Running it:
+- Clone the repo
+- Open `index.html` in a browser
+
 Demo:
 
 <a href="https://www.loom.com/share/4a4de4d7153f4f4da797efb0cce93b84">
