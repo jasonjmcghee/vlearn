@@ -5,6 +5,12 @@ With a few words and a click of a button, quickly get an engaging, high quality 
 
 Try it here, right now! [https://vlearn.ing](https://vlearn.ing)
 
+Demo:
+
+<a href="https://www.loom.com/share/4a4de4d7153f4f4da797efb0cce93b84">
+  <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/4a4de4d7153f4f4da797efb0cce93b84-with-play.gif">
+</a>
+
 Example Video:
 
 https://github.com/jasonjmcghee/vlearn/assets/1522149/149cba89-85a1-4667-9644-c9bae52fe287
