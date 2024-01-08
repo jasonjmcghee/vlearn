@@ -1,6 +1,16 @@
 # On-Demand Education
 
 With a few words and a click of a button, quickly get an engaging, high quality video.
+(And optionally save and share it!)
+
+<a href="https://www.loom.com/share/b6bf0dcef3874d338bb71cef4db00cfd">
+  <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/b6bf0dcef3874d338bb71cef4db00cfd-with-play.gif">
+</a>
+
+Example Video:
+
+https://github.com/jasonjmcghee/vlearn/assets/1522149/149cba89-85a1-4667-9644-c9bae52fe287
+
 
 The kind of thing you might find on youtube.
 
