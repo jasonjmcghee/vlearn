@@ -815,7 +815,8 @@ function openAiTTS(text) {
   const data = JSON.stringify({
     model: 'tts-1',
     input: text,
-    voice: 'onyx'
+    voice: 'onyx',
+    speed: 1.5,
   });
 
   return fetch(url, {
