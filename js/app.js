@@ -629,6 +629,8 @@ Focus on building intuition.
 
 If there are multiple concepts involved in something, list them out as bullet points.
 
+Unless it is a title slide, be sure to list bullet points outlining each of the key points.
+
 Outlining the content for the script that will be written is vital.
 
 One element in the array is an entire slide. Do not output it to the chat. Do not refer to this as an intensive crash course.
@@ -637,7 +639,7 @@ Use this only to understand the format of the JSON which should be created:
 
 {
   "slides": [
-    "# Electromagnetism and Gravity\n- Exploring the deep connections between electromagnetism and gravity,
+    "# Electromagnetism and Gravity\n- Exploring the deep connections between electromagnetism and gravity",
     "# Electromagnetism is a gauge theory\n- Keeping things symmetric even when we change our perspective\n- Attempts to formulate gravity as a gauge theory",
     "# Kaluza-Klein Theory\n- Unification of electromagnetism and gravity\n- Extra dimensions and compactification",
   ],
