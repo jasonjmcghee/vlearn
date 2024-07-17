@@ -816,7 +816,7 @@ function openAiTTS(text) {
     model: 'tts-1',
     input: text,
     voice: 'onyx',
-    speed: 1.5,
+    // speed: 1.5,
   });
 
   return fetch(url, {
