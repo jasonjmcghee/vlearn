@@ -813,7 +813,7 @@ function openAiTTS(text) {
   headers.append('Content-Type', 'application/json');
 
   const data = JSON.stringify({
-    model: 'tts-1',
+    model: 'gpt-4o-mini-tts',
     input: text,
     voice: 'onyx',
     // speed: 1.5,
